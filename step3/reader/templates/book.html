@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top:30px">
+  <div class="row">
+    <div class="col-sm-4">
+      <h4 class="heading">Биография автора</h4>
+      <div class="circle"> 
+        <span>Фото</span>
+      </div>
+      <div class="book">
+      <h3 class="mt-4">{{ book.author }}</h5>
+      <p>Здесь будет краткая биография писателя и ссылки на его сайт и соцпрофили. Для редактирования информации о книге воспользуйтесь кнопками "Изменить" и "Добавить".</p>
+      <h4 class="heading">О книге «{{ book.title }}»</h4>
+      <p>Подробная информация об издании. Рецензии критиков, отзывы читателей, награды и литературные премии.</p>
+    </div>
+<div class="col-xs-12 sidebutton-wrapper">
+  <button type="button" class="btn btn-info">Официальный сайт автора</button>
+  <button type="button" class="btn btn-info">Рецензии читателей</button>
+  <button type="button" class="btn btn-info">Профиль на Goodreads</button>
+  <button type="button" class="btn btn-info">Иллюстрации и обложки</button>
+</div>
+      <hr class="d-sm-none">
+    </div>
+    <div class="col-sm-8">
+      <h2><i class="fa fa-book"></i> {{ book.title }}</h2>
+      <h6>{{ book.created_at.strftime('%d-%m-%Y') }}</h6>
+          <h4 class="heading">Моя оценка</h4>
+          <h6>{% set stars = book.rating | int %}
+          {% for n in range(stars) %}
+          <span class="fa fa-star checked" style="color:orange"></span>
+          {% endfor %}
+      </h6>
+
+      <div class="book-cover row justify-content-center  mb-4">
+          <a href="{{ url_for('send_file', filename=book.cover) }}"><img src="{{ url_for('send_file', filename=book.cover) }}" class="rounded mr-2" alt="Обложка {{ book.title }}"></a>
+          <a href="{{ url_for('send_file', filename='illustration.jpg') }}"><img src="{{ url_for('send_file', filename='illustration.jpg') }}" class="rounded mr-2" alt="Обложка {{ book.title }}"></a>   
+          <a href="{{ url_for('send_file', filename='illustration.jpg') }}"><img src="{{ url_for('send_file', filename='illustration.jpg') }}" class="rounded mr-2" alt="Обложка {{ book.title }}"></a>                   
+      </div>
+      <div>
+      <h4 class="heading">Жанр</h4>
+      <div class="book-info mb-4">
+      <p>{{ book.genre.title() }}</p>
+      </div>
+      <h4 class="heading">Сюжет</h4>
+      <div class="book-info mb-4">      
+      <p>{{ book.description }}</p>
+      </div>
+      <h4 class="heading">Примечания</h4>
+      <div class="book-info mb-4">
+      <p>{{ book.notes }}</p>  
+      </div>
+            <div class="text-center d-flex">
+      <button type="button" class="btn btn-info btn-sm mr-4"> 
+       <a href="{{ url_for('edit', book_id=book.id) }}" style="color:white; text-decoration:none"><i class="fas fa-pen"></i> Изменить</a>
+      </button>
+             
+      <form action="{{ url_for('delete', book_id=book.id) }}" method="POST">
+        <button class='btn btn-danger btn-sm' type="submit" value="Удалить" onclick="return confirm('Удалить книгу?')"><i class="fa fa-times"></i> Удалить</button>
+      </form>
+    </div>   
+ </div> 
+  </div>
+   </div>
+    </div>
+{% endblock %}
